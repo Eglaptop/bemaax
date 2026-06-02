@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "System users with roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "editor", "cashier"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "posts": {
+      "title": "Post",
+      "description": "CMS content for EGLAPTOP blog",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "authorId": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "published", "scheduled"] },
+        "slug": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "authorId", "status", "slug"]
+    },
+    "sites": {
+      "title": "Site",
+      "description": "Managed platforms",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "url"]
+    },
+    "products": {
+      "title": "Product",
+      "description": "Inventory products",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "oldPrice": { "type": "number" },
+        "stock": { "type": "integer" },
+        "images": { "type": "array" },
+        "category": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price", "stock", "category"]
+    },
+    "categories": {
+      "title": "Category",
+      "description": "Product categories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "image": { "type": "string" }
+      },
+      "required": ["name", "slug"]
+    },
+    "orders": {
+      "title": "Order",
+      "description": "Customer orders",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "shippingAddress": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "items", "totalAmount", "status", "createdAt"]
+    },
+    "transactions": {
+      "title": "Transaction",
+      "description": "POS sales records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "cashierId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["items", "total", "cashierId", "timestamp"]
+    },
+    "leads": {
+      "title": "Lead",
+      "description": "Potential customers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "contacted", "qualified", "lost"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "status", "createdAt"]
+    },
+    "tasks": {
+      "title": "Task",
+      "description": "Internal team tasks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Critical"] },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["text", "priority", "completed", "createdAt"]
+    },
+    "notifications": {
+      "title": "Notification",
+      "description": "System alerts and notifications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["info", "warning", "error", "success"] },
+        "module": { "type": "string", "enum": ["POS", "CRM", "ERP", "CMS", "System"] },
+        "read": { "type": "boolean" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "message", "type", "module", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "users", "description": "User profiles" },
+    "/posts/{postId}": { "schema": "posts", "description": "CMS posts" },
+    "/products/{productId}": { "schema": "products", "description": "Product inventory" },
+    "/categories/{categoryId}": { "schema": "categories", "description": "Product categories" },
+    "/orders/{orderId}": { "schema": "orders", "description": "Customer orders" },
+    "/transactions/{transactionId}": { "schema": "transactions", "description": "Sales records" },
+    "/leads/{leadId}": { "schema": "leads", "description": "Lead tracking" },
+    "/tasks/{taskId}": { "schema": "tasks", "description": "Team tasks" },
+    "/notifications/{notificationId}": { "schema": "notifications", "description": "System notifications" }
+  }
+}
